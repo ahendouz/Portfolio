@@ -1,14 +1,19 @@
 const express = require("express");
+const bodyParser = require("body-parser");
 require("dotenv").config({ path: ".env" });
 
 const users = require("../routes/api/users");
 const profile = require("../routes/api/profile");
 const post = require("../routes/api/post");
 
+const app = express();
+
+// Body parser middleware
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
+
 // Connecting to our database
 const db = require("./db");
-
-const app = express();
 
 app.get("/", (req, res) => res.send("hello"));
 
