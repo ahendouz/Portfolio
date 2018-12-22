@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
 
 const User = require("./../../models/User");
 
@@ -8,7 +9,7 @@ const User = require("./../../models/User");
 router.get("/test", (req, res) => res.json({ msg: "users works" }));
 
 // POST
-router.post("/register", (req, res) => {
+router.post("/signup", (req, res) => {
   User.findOne({ email: req.body.email }).then(user => {
     if (user) {
       return res.status(400).json({ msg: "Email is already existe" });
@@ -29,6 +30,36 @@ router.post("/register", (req, res) => {
         });
       });
     }
+  });
+});
+
+router.post("/signin", ({ body: { email, password } }, res) => {
+  // find user by email
+  User.findOne({ email }).then(user => {
+    if (!user) {
+      return res.status(404).json({ email: "email not found" });
+    }
+    bcrypt.compare(password, user.password).then(isMatch => {
+      if (isMatch) {
+        // create a payload => "some user informations"
+        const payload = { id: user.id, name: user.name };
+
+        // Sign token
+        jwt.sign(
+          payload,
+          process.env.SECRET,
+          { expiresIn: 3600 * 24 * 7 },
+          (err, token) => {
+            res.json({
+              seccess: true,
+              token: `Bearer ${token}`
+            });
+          }
+        );
+      } else {
+        res.json({ password: "password is uncorrect" });
+      }
+    });
   });
 });
 
