@@ -16,6 +16,10 @@ app.use(bodyParser.json());
 // Connecting to our database
 const db = require("./db");
 
+// passport middleware
+app.use(passport.initialize());
+require("./../utils")(passport);
+
 app.get("/", (req, res) => res.send("hello"));
 
 // User routers
