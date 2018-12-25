@@ -5,7 +5,8 @@ module.exports = function validateSignupInput(
   name,
   email,
   password,
-  password2
+  password2,
+  typeOfUser
 ) {
   let errors = {};
 
@@ -14,6 +15,7 @@ module.exports = function validateSignupInput(
   email = !isEmpty(email) ? email : "";
   password = !isEmpty(password) ? password : "";
   password2 = !isEmpty(password2) ? password2 : "";
+  typeOfUser = !isEmpty(typeOfUser) ? typeOfUser : "";
 
   if (!Validator.isLength(name, { min: 2, max: 30 })) {
     errors.name = "Name must be between 2 and 30 characters";
@@ -45,6 +47,10 @@ module.exports = function validateSignupInput(
 
   if (!Validator.equals(password, password2)) {
     errors.password2 = "Passwords must match";
+  }
+  
+  if (Validator.isEmpty(typeOfUser)) {
+    errors.typeOfUser = "Type is required";
   }
 
   return { errors, isValid: isEmpty(errors) };

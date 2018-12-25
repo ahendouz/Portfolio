@@ -7,6 +7,7 @@ const userSchema = new Schema({
   email: { type: String, require: true },
   password: { type: String, require: true },
   avatar: { type: String, require: true },
+  type: { type: String, require: true },
   date: { type: Date, default: Date.now }
 });
 

@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const schema = mongoose.Schema;
+const Schema = mongoose.Schema;
 
 const DesignerSchema = new Schema({
   user: { type: Schema.Types.ObjectId, refs: "users" },
@@ -11,4 +11,4 @@ const DesignerSchema = new Schema({
   date: { type: Date, default: Date.now }
 });
 
-module.exports = DesignerSchema = mongoose.model("designer", DesignerSchema);
+module.exports = Designer = mongoose.model("designer", DesignerSchema);
