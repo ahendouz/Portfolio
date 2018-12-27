@@ -3,27 +3,29 @@ const isEmpty = require("./isEmpty");
 
 module.exports = function validatorProfileInput(
   handle,
+  bio,
   website,
-  dribbble,
-  github,
-  skills
+  social,
+  type
 ) {
   let errors = {};
 
   handle = !isEmpty(handle) ? handle : "";
-  skills = !isEmpty(skills) ? skills : "";
+  social = !isEmpty(social) ? social : "";
 
   Validator.isEmpty(handle) && (errors.handle = "Profile handle is required");
-  Validator.isEmpty(skills) && (errors.skills = "Profile skills is required");
+  Validator.isEmpty(bio) && (errors.bio = "Please add your bio");
+  Validator.isEmpty(social) &&
+    (errors.social = `Please add your ${
+      type === "designer" ? "dribbble" : "github"
+    } accont`);
+
   !isEmpty(website) &&
     !Validator.isURL(website) &&
     (errors.website = "Not valid URL");
-  !isEmpty(dribbble) &&
-    !Validator.isURL(dribbble) &&
-    (errors.dribbble = "Not valid URL");
-  !isEmpty(github) &&
-    !Validator.isURL(github) &&
-    (errors.github = "Not valid URL");
+  !isEmpty(social) &&
+    !Validator.isURL(social) &&
+    (errors.social = "Not valid URL");
 
   return {
     errors,
