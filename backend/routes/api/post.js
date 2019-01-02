@@ -111,6 +111,39 @@ router.post(
   }
 );
 
+// ADD A COMMENT TO THE POST -- PRIVATE ROUTE
+router.post(
+  "/comment/:id",
+  passport.authenticate("jwt", { session: false }),
+  ({ user: { id: user }, params, body: { text, name, avatar } }, res) => {
+    console.log("HELLLLL");
+    const { errors, isValid } = validatorPostInput(text);
+
+    // Check validation
+    if (!isValid) {
+      res.status(400).json({ errors });
+    }
+
+    Post.findById(params.id)
+      .then(post => {
+        // Create a new comment.
+        const newComment = {
+          text,
+          name,
+          avatar,
+          user
+        };
+
+        // Add to comments array.
+        post.comments.unshift(newComment);
+
+        // Save it to the database.
+        post.save().then(post => res.json(post));
+      })
+      .catch(err => res.status(404).json({ msg: "Post not found" }));
+  }
+);
+
 // DELETE A POST -- PRIVATE ROUTE
 router.delete(
   "/:id",
@@ -133,4 +166,3 @@ router.delete(
 );
 
 module.exports = router;
-
