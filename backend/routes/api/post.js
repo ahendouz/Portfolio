@@ -24,5 +24,13 @@ router.get("/", (req, res) => {
     .catch(err => res.status(404).json({ error: "no posts found" }));
 });
 
+// GET POST BY ID -- PUBLIC ROUTE
+router.get("/:id", (req, res) => {
+  Post.findById(req.params.id)
+    .sort({ date: -1 })
+    .then(post => res.json(post))
+    .catch(err => res.status(404).json({ error: "no post found" }));
+});
+
 
 module.exports = router;
