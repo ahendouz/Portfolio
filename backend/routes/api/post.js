@@ -32,5 +32,28 @@ router.get("/:id", (req, res) => {
     .catch(err => res.status(404).json({ error: "no post found" }));
 });
 
+// ADD A POST -- PRIVATE ROUTE
+router.post(
+  "/",
+  passport.authenticate("jwt", { session: false }),
+  ({ user: { id: user }, body: { text, name, avatar } }, res) => {
+    const { errors, isValid } = validatorPostInput(text);
+
+    // Check validation
+    if (!isValid) {
+      res.status(400).json({ errors });
+    }
+
+    const newPost = new Post({
+      text,
+      name,
+      avatar,
+      user
+    });
+
+    newPost.save().then(post => res.json(post));
+  }
+);
+
 
 module.exports = router;
