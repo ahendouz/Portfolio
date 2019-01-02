@@ -55,5 +55,62 @@ router.post(
   }
 );
 
+// LIKE A POST -- PRIVATE ROUTE
+router.post(
+  "/like/:id",
+  passport.authenticate("jwt", { session: false }),
+  ({ user: { type, id }, params }, res) => {
+    const Profile = type === "designer" ? Designer : Developer;
+    Profile.findOne({ user: id }).then(profile => {
+      Post.findById(params.id)
+        .then(post => {
+          if (
+            post.likes.filter(like => like.user.toString() === id).length > 0
+          ) {
+            return res.status(400).json({ msg: "You already likes this post" });
+          }
+
+          // Add this user to likes array.
+          post.likes.unshift({ user: id });
+          post.save().then(() => res.json(post));
+        })
+        .catch(err => res.status(404).json({ msg: "No post found" }));
+    });
+  }
+);
+
+// UNLIKE A POST -- PRIVATE ROUTE
+router.post(
+  "/unlike/:id",
+  passport.authenticate("jwt", { session: false }),
+  ({ user: { type, id }, params }, res) => {
+    const Profile = type === "designer" ? Designer : Developer;
+    Profile.findOne({ user: id }).then(profile => {
+      Post.findById(params.id)
+        .then(post => {
+          if (
+            post.likes.filter(like => like.user.toString() === id).length === 0
+          ) {
+            return res
+              .status(400)
+              .json({ msg: "You have not liked this post" });
+          }
+
+          // Get like id index.
+          const likeIndex = post.likes
+            .map(like => like.user.toString)
+            .indexOf(id);
+
+          // Splice out of array
+          post.likes.splice(likeIndex, 1);
+
+          post.save().then(() => res.json(post));
+        })
+        .catch(err => res.status(404).json({ msg: "No post found" }));
+    });
+  }
+);
+
+
 
 module.exports = router;
