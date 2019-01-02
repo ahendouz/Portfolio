@@ -111,6 +111,25 @@ router.post(
   }
 );
 
-
+// DELETE A POST -- PRIVATE ROUTE
+router.delete(
+  "/:id",
+  passport.authenticate("jwt", { session: false }),
+  ({ user: { type, id }, params }, res) => {
+    const Profile = type === "designer" ? Designer : Developer;
+    Profile.findOne({ user: id }).then(profile => {
+      Post.findById(params.id)
+        .then(post => {
+          // Check if the user own this post.
+          if (post.user.toString() !== id) {
+            return res.status(401).json({ msg: "You are not authorized" });
+          }
+          // Delete the post.
+          post.remove().then(() => res.json({ msg: "Success" }));
+        })
+        .catch(err => res.status(404).json({ msg: "Post not found" }));
+    });
+  }
+);
 
 module.exports = router;
