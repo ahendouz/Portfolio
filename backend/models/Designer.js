@@ -13,8 +13,7 @@ const DesignerSchema = new Schema({
       description: { type: String, required: true },
       image: {
         type: String,
-        default:
-          "https://res.cloudinary.com/ahendouz/image/upload/v1545928976/jnxnihn6oi0wabhm1tev.png"
+        required: true
       }
     }
   ],

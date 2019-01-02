@@ -10,7 +10,10 @@ const Developer = require("./../../models/Developer");
 
 // load validation
 const validatorProfileInput = require("../../validation/profile");
+const validationSkillInput = require("../../validation/skill");
+const validationProjectInput = require("../../validation/project");
 
+// --FOR TESTING
 router.get("/test", (req, res) => res.json({ msg: "profile works" }));
 
 // GET CURRENT USER PROFILE -- PRIVATE ROUTE
@@ -136,16 +139,19 @@ router.post(
   "/skills",
   passport.authenticate("jwt", { session: false }),
   ({ user: { type, id }, body: { name, description, image } }, res) => {
+    const { errors, isValid } = validationSkillInput(name, description, image);
+    if (!isValid) {
+      return res.status(400).json(errors);
+    }
     const Profile = type === "designer" ? Designer : Developer;
     Profile.findOne({ user: id }).then(profile => {
-      const newSkills = {
+      const newSkill = {
         name,
         description,
         image
       };
       // Add the new skill
-      profile.skills.unshift(newSkills);
-      console.log("PROFILE", profile);
+      profile.skills.unshift(newSkill);
 
       profile.save().then(profile => res.json(profile));
     });
@@ -153,11 +159,89 @@ router.post(
 );
 
 // ADD PROJECTS TO PROFILE -- PRIVATE ROUTE
+router.post(
+  "/projects",
+  passport.authenticate("jwt", { session: false }),
+  ({ user: { type, id }, body: { name, description, image } }, res) => {
+    const { errors, isValid } = validationSkillInput(name, description, image);
+    if (!isValid) {
+      return res.status(400).json(errors);
+    }
+    const Profile = type === "designer" ? Designer : Developer;
+    Profile.findOne({ user: id }).then(profile => {
+      const newProject = {
+        name,
+        description,
+        image
+      };
+      // Add the new project.
+      profile.projects.unshift(newProject);
+
+      // save it to the database
+      profile.save().then(profile => res.json(profile));
+    });
+  }
+);
 
 // DELETE SKILLS FROM PROFILE -- PRIVATE ROUTE
+router.delete(
+  "/skills/:skill_id",
+  passport.authenticate("jwt", { session: false }),
+  ({ user: { type, id }, params }, res) => {
+    const Profile = type === "designer" ? Designer : Developer;
+    Profile.findOne({ user: id })
+      .then(profile => {
+        // Get the kills that has the id that we passed.
+        const removeIndex = profile.skills
+          .map(skill => skill.id)
+          .indexOf(params.skill_id);
+
+        // Romove it.
+        profile.skills.splice(removeIndex, 1);
+
+        // Save it in database.
+        profile.save().then(profile => res.json({ profile }));
+      })
+      .catch(err => res.status(404).json);
+  }
+);
 
 // DELETE PROJECTS FROM PROFILE -- PRIVATE ROUTE
+router.delete(
+  "/projects/:project_id",
+  passport.authenticate("jwt", { session: false }),
+  ({ user: { type, id }, params }, res) => {
+    const Profile = type === "designer" ? Designer : Developer;
+    Profile.findOne({ user: id })
+      .then(profile => {
+        // Get the kills that has the id that we passed.
+        const removeIndex = profile.projects
+          .map(skill => skill.id)
+          .indexOf(params.skill_id);
 
-// DELETE PROFILE FROM USER -- PRIVATE ROUTE
+        // Romove it.
+        profile.projects.splice(removeIndex, 1);
+
+        // Save it in database.
+        profile.save().then(profile => res.json({ profile }));
+      })
+      .catch(err => res.status(404).json);
+  }
+);
+
+// DELETE PROFILE & USER -- PRIVATE ROUTE
+router.delete(
+  "/",
+  passport.authenticate("jwt", { session: false }),
+  ({ user: { type, id } }, res) => {
+    const Profile = type === "designer" ? Designer : Developer;
+    console.log("PROFILE", Profile);
+    Profile.findOneAndRemove({ user: id }).then(() => {
+      User.findByIdAndRemove({ _id: id }).then(() =>
+        res.json({ success: true })
+      );
+    });
+  }
+);
 
 module.exports = router;

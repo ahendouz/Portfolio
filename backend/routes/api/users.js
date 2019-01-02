@@ -99,6 +99,7 @@ router.post("/signin", ({ body: { email, password } }, res) => {
   });
 });
 
+// JUST FOR TESTING
 router.get(
   "/me",
   passport.authenticate("jwt", { session: false }),
