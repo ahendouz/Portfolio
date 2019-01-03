@@ -4,14 +4,18 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "client-install": "npm install --prefix cd ../frontend",
+    "client": "cd ../frontend && npm start",
     "start": "node src/index.js",
-    "server": "nodemon src/index.js"
+    "server": "nodemon src/index.js",
+    "dev": "concurrently \"npm run server\" \"npm run client\""
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.18.3",
+    "cors": "^2.8.5",
     "dotenv": "^6.2.0",
     "express": "^4.16.4",
     "jsonwebtoken": "^8.4.0",
@@ -21,6 +25,7 @@
     "validator": "^10.9.0"
   },
   "devDependencies": {
+    "concurrently": "^4.1.0",
     "nodemon": "^1.18.9"
   }
 }
