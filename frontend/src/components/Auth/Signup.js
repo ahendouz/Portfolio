@@ -1,5 +1,8 @@
 import React, { Component } from "react";
-import axios from "axios";
+// import axiols from "axios";
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
+import { signupUser } from "../actions/authActions";
 
 class Signup extends Component {
   state = {
@@ -18,15 +21,26 @@ class Signup extends Component {
 
   handleSubmit = e => {
     e.preventDefault();
-    axios
-      .post("/api/users/signup", { ...this.state })
-      .then(res => console.log(res.data))
-      .catch(err => this.setState({ errors: err.response }));
+    // axios
+    //   .post("/api/users/signup", { ...this.state })
+    //   .then(res => console.log(res.data))
+    //   .catch(err => this.setState({ errors: err.response }));
+    const newUser = {
+      name: this.state.name,
+      email: this.state.email,
+      password: this.state.password,
+      typeOfUser: this.state.typeOfUser
+    };
+    this.props.signupUser(newUser);
+
+    console.log(this.props.signupUser);
   };
   render() {
     const { name, email, password, typeOfUser } = this.state;
+    const { user } = this.props.auth;
     return (
       <div>
+        {user ? user.name : null}
         <form onSubmit={e => this.handleSubmit(e)}>
           <input
             type="text"
@@ -65,4 +79,15 @@ class Signup extends Component {
   }
 }
 
-export default Signup;
+Signup.propTypes = {
+  signupUser: PropTypes.func.isRequired,
+  auth: PropTypes.object.isRequired
+};
+
+const mapStateToProps = state => ({
+  auth: state.auth
+});
+export default connect(
+  mapStateToProps,
+  { signupUser }
+)(Signup);
