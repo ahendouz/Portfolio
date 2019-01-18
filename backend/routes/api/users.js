@@ -71,7 +71,8 @@ router.post("/signin", ({ body: { email, password } }, res) => {
   User.findOne({ email }).then(user => {
     // check of this email is excite or no.
     if (!user) {
-      return res.status(404).json({ email: "Email not found" });
+      errors.email = "Email not found";
+      return res.status(404).json(errors);
     }
 
     // check if the password matches the one on the database.
@@ -93,7 +94,8 @@ router.post("/signin", ({ body: { email, password } }, res) => {
           }
         );
       } else {
-        res.json({ password: "password is uncorrect" });
+        errors.password = "password is uncorrect";
+        return res.status(404).json(errors);
       }
     });
   });

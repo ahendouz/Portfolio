@@ -1,11 +1,24 @@
 import React, { Component } from "react";
 import axios from "axios";
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
+
+import { signinUser } from "../../actions/authActions";
 
 class Signin extends Component {
   state = {
     email: "",
     password: "",
-    errors: ""
+    errors: {}
+  };
+
+  componentWillReceiveProps = nextProps => {
+    if (nextProps.auth.isAuthenticated) {
+      this.props.history.push("/dashboard");
+    }
+    if (nextProps.errors) {
+      this.setState({ errors: nextProps.errors });
+    }
   };
   handleChange = e => {
     const { name, value } = e.target;
@@ -16,13 +29,12 @@ class Signin extends Component {
 
   handleSubmit = e => {
     e.preventDefault();
-    axios
-      .post("/api/users/signin", { ...this.state })
-      .then(res => console.log(res.data))
-      .catch(err => this.setState({ errors: err.response }));
+    const { email, password } = this.state;
+    const userInfo = { email, password };
+    this.props.signinUser(userInfo);
   };
   render() {
-    const { email, password } = this.state;
+    const { email, password, errors } = this.state;
     return (
       <div>
         <form onSubmit={e => this.handleSubmit(e)}>
@@ -47,4 +59,14 @@ class Signin extends Component {
   }
 }
 
-export default Signin;
+// Signin.prototype = {};
+
+const mapStateToProps = state => ({
+  auth: state.auth,
+  errors: state.errors
+});
+
+export default connect(
+  mapStateToProps,
+  { signinUser }
+)(Signin);
