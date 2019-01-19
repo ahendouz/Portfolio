@@ -1,11 +1,11 @@
 import React, { Fragment } from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
-import Navbar from "../components/Layout/Navbar/Navbar";
+import Navbar from "../components/Layout/Navbar";
 import Home from "../components/Home";
 import Signin from "../components/Auth/Signin";
 import Signup from "../components/Auth/Signup";
-import Footer from "../components/Layout/Footer/Footer";
+import Footer from "../components/Layout/Footer";
 
 export const Root = () => (
   <Router>

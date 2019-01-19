@@ -11,7 +11,13 @@ class Signin extends Component {
     password: "",
     errors: {}
   };
-
+  
+  componentDidMount = () => {
+    const  {isAuthenticated } = this.props.auth
+    if(isAuthenticated) {
+      this.props.history.push("/dashboard")
+    }
+  }
   componentWillReceiveProps = nextProps => {
     if (nextProps.auth.isAuthenticated) {
       this.props.history.push("/dashboard");
