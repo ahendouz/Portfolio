@@ -4,6 +4,7 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 
 import { logoutUser } from "../../actions/authActions";
+import { NavbarStyle } from "../../styles";
 
 const Navbar = ({ logoutUser, auth: { isAuthenticated, user } }) => {
   const onLogoutClick = e => {
@@ -11,34 +12,39 @@ const Navbar = ({ logoutUser, auth: { isAuthenticated, user } }) => {
     logoutUser();
   };
 
-  const authLinks = (
-    <div href="" onClick={e => onLogoutClick(e)}>
-      <img
-        className="rounded-circle"
-        src={user.avatar}
-        alt={user.name}
-        style={{ width: "25px", marginRight: "5px" }}
-        title="You must have a Gravatar connected to your email to display an image"
-      />{" "}
-      Logout
+  const authenticated = (
+    <div className="authenticated">
+      <div className="avatar">
+        <img
+          className="rounded-circle"
+          src={user.avatar}
+          alt={user.name}
+          style={{ width: "25px", marginRight: "5px" }}
+          title="You must have a Gravatar connected to your email to display an image"
+        />
+      </div>
+      <span onClick={e => onLogoutClick(e)} className="logout">
+        Logout
+      </span>
     </div>
   );
 
-  const guestLinks = (
-    <ul className="navbar-nav ml-auto">
-      <li className="nav-item">
-        <Link className="nav-link" to="/signup">
-          Sign Up
-        </Link>
+  const guest = (
+    <ul className="guest">
+      <li>
+        <Link to="/signup">Sign Up</Link>
       </li>
-      <li className="nav-item">
-        <Link className="nav-link" to="/signin">
-          Sign In
-        </Link>
+      <li>
+        <Link to="/signin">Sign In</Link>
       </li>
     </ul>
   );
-  return isAuthenticated ? authLinks : guestLinks;
+  return (
+    <NavbarStyle>
+      <h1>Portflio</h1>
+      {isAuthenticated ? authenticated : guest}
+    </NavbarStyle>
+  );
 };
 
 Navbar.propTypes = {

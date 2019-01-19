@@ -4,6 +4,7 @@ import PropTypes from "prop-types";
 import { withRouter } from "react-router-dom";
 
 import { signupUser } from "../../actions/authActions";
+import { AuthFormStyle, SignupStyle } from "../../styles";
 
 class Signup extends Component {
   state = {
@@ -44,9 +45,9 @@ class Signup extends Component {
     const { name, email, password, typeOfUser } = this.state;
     const { user } = this.props.auth;
     return (
-      <div>
+      <SignupStyle className="container">
         {user ? user.name : null}
-        <form onSubmit={e => this.handleSubmit(e)}>
+        <AuthFormStyle onSubmit={e => this.handleSubmit(e)}>
           <input
             type="text"
             name="name"
@@ -78,8 +79,8 @@ class Signup extends Component {
             <option value="developer">Developer</option>
           </select>
           <button type="submit">Sign up</button>
-        </form>
-      </div>
+        </AuthFormStyle>
+      </SignupStyle>
     );
   }
 }

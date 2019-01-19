@@ -4,6 +4,7 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 
 import { signinUser } from "../../actions/authActions";
+import { AuthFormStyle, SigninStyle } from "../../styles";
 
 class Signin extends Component {
   state = {
@@ -11,13 +12,13 @@ class Signin extends Component {
     password: "",
     errors: {}
   };
-  
+
   componentDidMount = () => {
-    const  {isAuthenticated } = this.props.auth
-    if(isAuthenticated) {
-      this.props.history.push("/dashboard")
+    const { isAuthenticated } = this.props.auth;
+    if (isAuthenticated) {
+      this.props.history.push("/dashboard");
     }
-  }
+  };
   componentWillReceiveProps = nextProps => {
     if (nextProps.auth.isAuthenticated) {
       this.props.history.push("/dashboard");
@@ -42,8 +43,8 @@ class Signin extends Component {
   render() {
     const { email, password, errors } = this.state;
     return (
-      <div>
-        <form onSubmit={e => this.handleSubmit(e)}>
+      <SigninStyle className="container">
+        <AuthFormStyle onSubmit={e => this.handleSubmit(e)}>
           <input
             type="email"
             name="email"
@@ -59,8 +60,8 @@ class Signin extends Component {
             onChange={this.handleChange}
           />
           <button type="submit">Sign up</button>
-        </form>
-      </div>
+        </AuthFormStyle>
+      </SigninStyle>
     );
   }
 }
