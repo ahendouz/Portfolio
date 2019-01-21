@@ -1,10 +1,10 @@
 import React, { Component } from "react";
-import axios from "axios";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 
 import { signinUser } from "../../actions/authActions";
 import { AuthFormStyle, SigninStyle } from "../../styles";
+import TextFieldGroup from "../Common/TextFieldGroup";
 
 class Signin extends Component {
   state = {
@@ -45,19 +45,21 @@ class Signin extends Component {
     return (
       <SigninStyle className="container">
         <AuthFormStyle onSubmit={e => this.handleSubmit(e)}>
-          <input
-            type="email"
+          <TextFieldGroup
+            placeholder="Email Address"
             name="email"
-            placeholder="Your email"
+            type="email"
             value={email}
             onChange={this.handleChange}
+            error={errors.email}
           />
-          <input
-            type="password"
+          <TextFieldGroup
+            placeholder="Password"
             name="password"
-            placeholder="Your password"
+            type="password"
             value={password}
             onChange={this.handleChange}
+            error={errors.password}
           />
           <button type="submit">Sign up</button>
         </AuthFormStyle>
@@ -66,7 +68,11 @@ class Signin extends Component {
   }
 }
 
-// Signin.prototype = {};
+Signin.protTypes = {
+  auth: PropTypes.object.isRequired,
+  signinUser: PropTypes.func.isRequired,
+  errors: PropTypes.object.isRequired
+};
 
 const mapStateToProps = state => ({
   auth: state.auth,

@@ -5,6 +5,7 @@ export const AuthFormStyle = styled.form`
   flex-direction: column;
   input {
     padding: 1rem;
+    width: 100%;
   }
   button {
     align-self: center;

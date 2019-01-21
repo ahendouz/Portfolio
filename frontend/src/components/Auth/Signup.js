@@ -5,6 +5,7 @@ import { withRouter } from "react-router-dom";
 
 import { signupUser } from "../../actions/authActions";
 import { AuthFormStyle, SignupStyle } from "../../styles";
+import TextFieldGroup from "../Common/TextFieldGroup";
 
 class Signup extends Component {
   state = {
@@ -42,32 +43,34 @@ class Signup extends Component {
     this.props.signupUser(newUser, this.props.history);
   };
   render() {
-    const { name, email, password, typeOfUser } = this.state;
+    const { name, email, password, typeOfUser, errors } = this.state;
     const { user } = this.props.auth;
     return (
       <SignupStyle className="container">
         {user ? user.name : null}
         <AuthFormStyle onSubmit={e => this.handleSubmit(e)}>
-          <input
-            type="text"
-            name="name"
+          <TextFieldGroup
             placeholder="Your fullname"
+            name="name"
             value={name}
             onChange={this.handleChange}
+            error={errors.name}
           />
-          <input
-            type="email"
+          <TextFieldGroup
+            placeholder="Email Address"
             name="email"
-            placeholder="Your email"
+            type="email"
             value={email}
             onChange={this.handleChange}
+            error={errors.email}
           />
-          <input
-            type="password"
+          <TextFieldGroup
+            placeholder="Password"
             name="password"
-            placeholder="Your password"
+            type="password"
             value={password}
             onChange={this.handleChange}
+            error={errors.password}
           />
           <select
             type="text"
@@ -90,8 +93,9 @@ Signup.propTypes = {
   auth: PropTypes.object.isRequired
 };
 
-const mapStateToProps = state => ({
-  auth: state.auth
+const mapStateToProps = ({ auth, errors }) => ({
+  auth,
+  errors
 });
 
 export default connect(

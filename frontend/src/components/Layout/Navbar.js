@@ -4,12 +4,18 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 
 import { logoutUser } from "../../actions/authActions";
+import { clearCurrentProfile } from "../../actions/profileActions";
 import { NavbarStyle } from "../../styles";
 
-const Navbar = ({ logoutUser, auth: { isAuthenticated, user } }) => {
+const Navbar = ({
+  logoutUser,
+  clearCurrentProfile,
+  auth: { isAuthenticated, user }
+}) => {
   const onLogoutClick = e => {
     e.preventDefault();
     logoutUser();
+    clearCurrentProfile();
   };
 
   const authenticated = (
@@ -41,7 +47,9 @@ const Navbar = ({ logoutUser, auth: { isAuthenticated, user } }) => {
   );
   return (
     <NavbarStyle>
-      <h1>Portflio</h1>
+      <Link to="/">
+        <h1>Portflio</h1>
+      </Link>
       {isAuthenticated ? authenticated : guest}
     </NavbarStyle>
   );
@@ -57,5 +65,5 @@ const mapStateToProps = ({ auth }) => ({
 
 export default connect(
   mapStateToProps,
-  { logoutUser }
+  { logoutUser, clearCurrentProfile }
 )(Navbar);
