@@ -5,16 +5,24 @@ import PropTypes from "prop-types";
 
 import TextFieldGroup from "../Common/TextFieldGroup";
 import TextAreaFieldGroup from "../Common/TextAreaFieldGroup";
-import { createProfile } from "../../actions/profileActions";
+import { createProfile, getCurrentProfile } from "../../actions/profileActions";
 import { AuthFormStyle } from "../../styles";
+import { isEmpty } from "../../validation/isEmpty";
 
-class CreateProfile extends Component {
+class EditProfile extends Component {
   state = {
     handle: "",
     website: "",
     social: "",
     bio: "",
+    typeOfUser: undefined,
     errors: {}
+  };
+
+  componentDidMount = () => {
+    this.props.getCurrentProfile();
+    const { typeOfUser } = this.props;
+    this.setState({ typeOfUser });
   };
 
   handleChange = e => {
@@ -22,9 +30,8 @@ class CreateProfile extends Component {
   };
 
   handleSubmit = e => {
-    const { typeOfUser } = this.props;
     e.preventDefault();
-    const { handle, website, bio, social } = this.state;
+    const { handle, website, bio, social, typeOfUser } = this.state;
     let profileData;
     if (typeOfUser === "designer") {
       profileData = { handle, website, bio, dribbble: social };
@@ -38,15 +45,34 @@ class CreateProfile extends Component {
     if (nextProps.errors) {
       this.setState({ errors: nextProps.errors });
     }
+    if (nextProps.profile.profile) {
+      const profile = nextProps.profile.profile;
+      console.log(nextProps);
+      // Bring skills array back to CSV
+      //   const skillsCSV = profile.skills.join(",");
+      // If profile field doesnt exist, make empty string
+      profile.website = !isEmpty(profile.website) ? profile.website : "";
+      profile.bio = !isEmpty(profile.bio) ? profile.bio : "";
+      if (this.state.typeOfUser === "designer") {
+        profile.social = !isEmpty(profile.dribbble) ? profile.dribbble : "";
+      } else {
+        profile.social = !isEmpty(profile.github) ? profile.github : "";
+      }
+      this.setState({
+        handle: profile.handle,
+        bio: profile.bio,
+        website: profile.website,
+        social: profile.social
+      });
+    }
   };
 
   render() {
     const { errors, handle, website, social, bio } = this.state;
-
     const { typeOfUser } = this.props;
     return (
       <div className="container">
-        <h1>Create Your Profile</h1>
+        <h1>Edit Your Profile</h1>
         <AuthFormStyle onSubmit={this.handleSubmit}>
           <TextFieldGroup
             placeholder="* Profile Handle"
@@ -93,7 +119,7 @@ class CreateProfile extends Component {
   }
 }
 
-CreateProfile.propTypes = {
+EditProfile.propTypes = {
   profile: PropTypes.object.isRequired,
   errors: PropTypes.object.isRequired
 };
@@ -106,5 +132,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { createProfile }
-)(withRouter(CreateProfile));
+  { createProfile, getCurrentProfile }
+)(withRouter(EditProfile));

@@ -103,10 +103,9 @@ router.post(
     handle && (profileFields.handle = handle);
     bio && (profileFields.bio = bio);
     website && (profileFields.website = website);
-    social &&
-      (profileFields.social =
-        type === "designer" ? { dribbble: dribbble } : { github: github });
-    console.log(profileFields);
+    social && type === "designer"
+      ? (profileFields.dribbble = dribbble)
+      : (profileFields.github = github);
 
     Profile.findOne({ user: id }).then(profile => {
       if (profile) {

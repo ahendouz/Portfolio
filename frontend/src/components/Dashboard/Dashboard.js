@@ -30,13 +30,19 @@ class Dashboard extends Component {
       if (Object.keys(profile).length > 0) {
         dashboardContent = (
           <div>
-            <p className="lead text-muted">
-              Welcome <Link to={`/profile/${profile.handle}`}>{user.name}</Link>
+            <p>
+              Welcome{" "}
+              <Link
+                to={`/profile/${profile.handle}`}
+                style={{ color: "tomato" }}
+              >
+                {user.name}
+              </Link>
             </p>
             <ProfileActions />
             {/* <Skills skills={profile.skills} /> */}
             <div style={{ marginBottom: "60px" }} />
-            <button onClick={this.handleDelete} className="btn btn-danger">
+            <button onClick={this.handleDelete} className="btn">
               Delete My Account
             </button>
           </div>
@@ -47,7 +53,9 @@ class Dashboard extends Component {
           <div>
             <p>Welcome {user.name}</p>
             <p>You have not yet setup a profile, please add some info</p>
-            <Link to="/create-profile">Create Profile</Link>
+            <Link to="/create-profile" className="btn">
+              Create Profile
+            </Link>
           </div>
         );
       }

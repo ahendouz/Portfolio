@@ -9,6 +9,7 @@ import Signin from "../components/Auth/Signin";
 import Signup from "../components/Auth/Signup";
 import Dashboard from "../components/Dashboard/Dashboard";
 import CreateProfile from "../components/CreateProfile/CreateProfile";
+import EditProfile from "../components/EditProfile/EditProfile";
 import Footer from "../components/Layout/Footer";
 
 export const Root = () => (
@@ -21,6 +22,7 @@ export const Root = () => (
         <Route path="/signup" component={Signup} />
         <PrivateRoute path="/dashboard" component={Dashboard} />
         <PrivateRoute path="/create-profile" component={CreateProfile} />
+        <Route path="/edit-profile" component={EditProfile} />
       </Switch>
       <Footer />
     </Fragment>
