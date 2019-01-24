@@ -10,6 +10,7 @@ import Signup from "../components/Auth/Signup";
 import Dashboard from "../components/Dashboard/Dashboard";
 import CreateProfile from "../components/CreateProfile/CreateProfile";
 import EditProfile from "../components/EditProfile/EditProfile";
+import AddSkills from "../components/AddSkills/AddSkills";
 import Footer from "../components/Layout/Footer";
 
 export const Root = () => (
@@ -23,6 +24,7 @@ export const Root = () => (
         <PrivateRoute path="/dashboard" component={Dashboard} />
         <PrivateRoute path="/create-profile" component={CreateProfile} />
         <Route path="/edit-profile" component={EditProfile} />
+        <Route path="/add-skills" component={AddSkills} />
       </Switch>
       <Footer />
     </Fragment>
