@@ -54,6 +54,19 @@ export const AddSkill = (skillData, history) => dispatch => {
     );
 };
 
+// Add Skill
+export const AddProject = (ProjectData, history) => dispatch => {
+  axios
+    .post("/api/profile/projects", ProjectData)
+    .then(res => history.push("/"))
+    .catch(err =>
+      dispatch({
+        type: GET_ERRORS,
+        payload: err.response.data
+      })
+    );
+};
+
 // Profile loading
 export const setProfileLoading = () => {
   return {
