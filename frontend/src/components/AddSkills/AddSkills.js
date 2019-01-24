@@ -1,7 +1,9 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
+import { Link, withRouter } from "react-router-dom";
 
+import { AddSkill } from "../../actions/profileActions";
 import TextFieldGroup from "../Common/TextFieldGroup";
 import { AuthFormStyle } from "../../styles";
 
@@ -24,20 +26,22 @@ class AddSkills extends Component {
     this.setState({ [name]: value });
   };
 
-  handleSubmit = () => {
+  handleSubmit = e => {
+    e.preventDefault();
     const { name, description, image } = this.state;
     const skillData = {
       name,
       description,
       image
     };
+    this.props.AddSkill(skillData, this.props.history);
   };
   render() {
     const { name, description, image, errors } = this.state;
     return (
       <div className="container">
         <h1>Add Your skill</h1>
-        <AuthFormStyle>
+        <AuthFormStyle onSubmit={e => this.handleSubmit(e)}>
           <TextFieldGroup
             placeholder="The name of the skill"
             name="name"
@@ -59,6 +63,7 @@ class AddSkills extends Component {
             onChange={this.handleChange}
             error={errors.image}
           />
+          <button type="submit">Add</button>
         </AuthFormStyle>
       </div>
     );
@@ -66,6 +71,7 @@ class AddSkills extends Component {
 }
 
 AddSkills.propTypes = {
+  AddSkill: PropTypes.func.isRequired,
   profile: PropTypes.object.isRequired,
   errors: PropTypes.object.isRequired
 };
@@ -75,4 +81,7 @@ const mapStateToProps = state => ({
   errors: state.errors
 });
 
-export default connect(mapStateToProps)(AddSkills);
+export default connect(
+  mapStateToProps,
+  { AddSkill }
+)(withRouter(AddSkills));
