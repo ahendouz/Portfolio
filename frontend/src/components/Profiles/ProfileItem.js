@@ -5,7 +5,7 @@ import { isEmpty } from "../../validation/isEmpty";
 
 class ProfileItem extends Component {
   render() {
-    const { user } = this.props;
+    const { handle, user } = this.props;
 
     return (
       <div style={{ background: "aquamarine" }}>
@@ -15,7 +15,9 @@ class ProfileItem extends Component {
             <img src={user.avatar} alt="" />
           </div>
           <div>
-            <h3>{user.name}</h3>
+            <Link to={`/profile/${handle}`}>
+              <h3>{user.name}</h3>
+            </Link>
           </div>
         </div>
       </div>

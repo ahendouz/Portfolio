@@ -18,6 +18,7 @@ import EditProfile from "../components/EditProfile/EditProfile";
 import AddSkills from "../components/AddSkills/AddSkills";
 import AddProjects from "../components/AddProjects/AddProjects";
 import Profiles from "../components/Profiles/Profiles";
+import Profile from "../components/Profile/Profile";
 import Footer from "../components/Layout/Footer";
 
 export const Root = () => (
@@ -34,7 +35,8 @@ export const Root = () => (
         <Route path="/add-skills" component={AddSkills} />
         <Route path="/add-projects" component={AddProjects} />
         <Route path="/profiles" component={Profiles} />
-        <Redirect to="/" />
+        <Route path="/profile/:handle" component={Profile} />
+        {/* <Redirect to="/" /> */}
       </Switch>
       <Footer />
     </Fragment>
