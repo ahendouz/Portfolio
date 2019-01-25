@@ -19,6 +19,8 @@ import AddSkills from "../components/AddSkills/AddSkills";
 import AddProjects from "../components/AddProjects/AddProjects";
 import Profiles from "../components/Profiles/Profiles";
 import Profile from "../components/Profile/Profile";
+import Posts from "../components/Posts/Posts";
+import Post from "../components/Post/Post";
 import Footer from "../components/Layout/Footer";
 
 export const Root = () => (
@@ -31,12 +33,14 @@ export const Root = () => (
         <Route path="/signup" component={Signup} />
         <PrivateRoute path="/dashboard" component={Dashboard} />
         <PrivateRoute path="/create-profile" component={CreateProfile} />
-        <Route path="/edit-profile" component={EditProfile} />
-        <Route path="/add-skills" component={AddSkills} />
-        <Route path="/add-projects" component={AddProjects} />
+        <PrivateRoute path="/edit-profile" component={EditProfile} />
+        <PrivateRoute path="/add-skills" component={AddSkills} />
+        <PrivateRoute path="/add-projects" component={AddProjects} />
         <Route path="/profiles" component={Profiles} />
         <Route path="/profile/:handle" component={Profile} />
-        {/* <Redirect to="/" /> */}
+        <PrivateRoute path="/feed" component={Posts} />
+        <PrivateRoute path="/post/:id" component={Post} />
+        <Redirect to="/" />
       </Switch>
       <Footer />
     </Fragment>

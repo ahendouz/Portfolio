@@ -28,7 +28,7 @@ app.get("/", (req, res) => res.send("Welcome"));
 // User routers
 app.use("/api/users", users);
 app.use("/api/profile", profile);
-app.use("/api/post", post);
+app.use("/api/posts", post);
 
 // const corsOptions = {
 //   origin: "http://localhost:3000",
