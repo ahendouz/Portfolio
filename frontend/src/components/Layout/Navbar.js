@@ -20,6 +20,7 @@ const Navbar = ({
 
   const authenticated = (
     <div className="authenticated">
+      <Link to="/dashboard">Dashboard</Link>
       <div className="avatar">
         <img
           className="rounded-circle"

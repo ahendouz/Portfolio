@@ -4,6 +4,8 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 
 import { getCurrentProfile, deleteAccount } from "../../actions/profileActions";
+import Skills from "./Skills";
+import Projects from "./Projects";
 import Spinner from "../Common/Spinner";
 import { DashboardStyle } from "../../styles";
 import ProfileActions from "./ProfileActions";
@@ -40,9 +42,13 @@ class Dashboard extends Component {
               </Link>
             </p>
             <ProfileActions />
-            {/* <Skills skills={profile.skills} /> */}
-            <div style={{ marginBottom: "60px" }} />
-            <button onClick={this.handleDelete} className="btn">
+            <Skills skills={profile.skills} />
+            <Projects projects={profile.projects} />
+            <button
+              style={{ marginTop: "60px" }}
+              onClick={this.handleDelete}
+              className="btn"
+            >
               Delete My Account
             </button>
           </div>

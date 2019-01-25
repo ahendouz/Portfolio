@@ -213,10 +213,10 @@ router.delete(
     const Profile = type === "designer" ? Designer : Developer;
     Profile.findOne({ user: id })
       .then(profile => {
-        // Get the kills that has the id that we passed.
+        // Get the profile that has the id that we passed.
         const removeIndex = profile.projects
-          .map(skill => skill.id)
-          .indexOf(params.skill_id);
+          .map(profile => profile.id)
+          .indexOf(params.project_id);
 
         // Romove it.
         profile.projects.splice(removeIndex, 1);

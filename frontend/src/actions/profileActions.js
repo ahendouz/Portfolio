@@ -54,7 +54,20 @@ export const AddSkill = (skillData, history) => dispatch => {
     );
 };
 
-// Add Skill
+// Delete Skill
+export const deleteSkill = id => dispatch => {
+  axios
+    .delete(`api/profile/skills/${id}`)
+    .then(res =>
+      dispatch({
+        type: GET_PROFILE,
+        payload: res.data.profile
+      })
+    )
+    .catch(err => dispatch({ type: GET_ERRORS, payload: err.response.data }));
+};
+
+// Add Project
 export const AddProject = (ProjectData, history) => dispatch => {
   axios
     .post("/api/profile/projects", ProjectData)
@@ -65,6 +78,19 @@ export const AddProject = (ProjectData, history) => dispatch => {
         payload: err.response.data
       })
     );
+};
+
+// Delete Project.
+export const deleteProject = id => dispatch => {
+  axios
+    .delete(`api/profile/projects/${id}`)
+    .then(res =>
+      dispatch({
+        type: GET_PROFILE,
+        payload: res.data.profile
+      })
+    )
+    .catch(err => dispatch({ type: GET_ERRORS, payload: err.response.data }));
 };
 
 // Profile loading
