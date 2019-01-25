@@ -12,7 +12,9 @@ const Project = props => {
   const { _id: id, name } = props;
   return (
     <div>
-      <span>{name}</span> <span onClick={() => handleDelete(id)}>X</span>
+      {" "}
+      Project: <span>{name}</span>{" "}
+      <span onClick={() => handleDelete(id)}>X</span>
     </div>
   );
 };

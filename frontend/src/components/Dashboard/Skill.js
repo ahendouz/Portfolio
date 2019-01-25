@@ -11,7 +11,8 @@ const Skill = props => {
   const { _id: id, name } = props;
   return (
     <div>
-      <span>{name}</span> <span onClick={() => handleDelete(id)}>X</span>
+      {" "}
+      Skill: <span>{name}</span> <span onClick={() => handleDelete(id)}>X</span>
     </div>
   );
 };

@@ -43,7 +43,7 @@ router.get("/all", async (req, res) => {
     "name",
     "avatar"
   ]);
-  res.json({ users: { designers, developers } });
+  res.json({ users: [designers, developers] });
 });
 
 // GET USER BY THE HANDLE -- PUBLIC

@@ -1,5 +1,10 @@
 import React, { Fragment } from "react";
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Redirect
+} from "react-router-dom";
 
 import PrivateRoute from "../lib/PrivateRoute";
 
@@ -12,6 +17,7 @@ import CreateProfile from "../components/CreateProfile/CreateProfile";
 import EditProfile from "../components/EditProfile/EditProfile";
 import AddSkills from "../components/AddSkills/AddSkills";
 import AddProjects from "../components/AddProjects/AddProjects";
+import Profiles from "../components/Profiles/Profiles";
 import Footer from "../components/Layout/Footer";
 
 export const Root = () => (
@@ -27,6 +33,8 @@ export const Root = () => (
         <Route path="/edit-profile" component={EditProfile} />
         <Route path="/add-skills" component={AddSkills} />
         <Route path="/add-projects" component={AddProjects} />
+        <Route path="/profiles" component={Profiles} />
+        <Redirect to="/" />
       </Switch>
       <Footer />
     </Fragment>
