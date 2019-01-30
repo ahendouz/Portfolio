@@ -1,9 +1,14 @@
-import React, { Component } from "react";
+import React from "react";
+import { connect } from "react-redux";
 
-class Home extends Component {
-  render() {
-    return <div>Home</div>;
-  }
-}
+import Welcome from "../Pages/Welcome";
+import Posts from "../Pages/Posts";
 
-export default Home;
+const Home = ({ auth: { isAuthenticated } }) =>
+  isAuthenticated ? <Posts /> : <Welcome />;
+
+const mapStateToProps = ({ auth }) => ({
+  auth
+});
+
+export default connect(mapStateToProps)(Home);
